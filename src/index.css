@@ -1,0 +1,159 @@
+@import "tailwindcss";
+
+@theme {
+  /* Legacy Variables Mapped to Tailwind Theme if needed, 
+     but standard CSS variables work fine in v4 */
+}
+
+@layer base {
+  :root {
+    /* ============================================
+       专业阅读器配色 - 日间模式
+       避免纯黑/纯白，降低光晕效应
+       ============================================ */
+    --bg-body: #f8f9fa;
+    --bg-paper: #FEFAF6;
+    /* 米白暖色调 */
+    --bg-card: #ffffff;
+    --text-primary: #2C2C2C;
+    /* 深灰，非纯黑 */
+    --text-secondary: #5a6268;
+    /* A11Y #44: Improved contrast ~5.1:1 on white */
+    --accent-color: #0984e3;
+    --border-color: #dfe6e9;
+    --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+    /* Layout */
+    --header-height: 60px;
+    --sidebar-width: 250px;
+    --reader-max-width: 680px;
+    /* 约35-45汉字/行 */
+    --gap-standard: 1.5rem;
+
+    /* 阅读器排版 */
+    --reader-line-height: 1.75;
+    /* 行高 1.6-1.8x */
+    --reader-paragraph-spacing: 1.2em;
+    /* 段间距 */
+    --reader-font-size: 18px;
+    /* Web端默认字号 */
+
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-medium: 0.3s ease;
+  }
+
+  [data-theme="dark"] {
+    /* ============================================
+       专业阅读器配色 - 夜间模式
+       深灰背景+浅灰文字，护眼
+       ============================================ */
+    --bg-body: #0a0a0a;
+    --bg-paper: #121212;
+    /* 深灰，非纯黑 */
+    --bg-card: #1a1a1a;
+    --text-primary: #B0B0B0;
+    /* 浅灰，降低亮度 */
+    --text-secondary: #9a9a9a;
+    /* A11Y #44: Improved contrast ~6.3:1 on #121212 */
+    --accent-color: #74b9ff;
+    --border-color: #2d3436;
+    --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+  }
+
+  body {
+    @apply font-sans antialiased transition-colors duration-300;
+    color: var(--text-primary);
+    background-color: var(--bg-body);
+  }
+}
+
+/* Utility classes mapping to variables */
+.bg-paper {
+  background-color: var(--bg-paper);
+}
+
+.text-primary {
+  color: var(--text-primary);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+.bg-card {
+  background-color: var(--bg-card);
+}
+
+/* ============================================
+   专业阅读器排版样式
+   ============================================ */
+
+/* 阅读器主体容器 */
+.reader-content {
+  max-width: var(--reader-max-width);
+  /* 680px，约35-45汉字 */
+  margin: 0 auto;
+  line-height: var(--reader-line-height);
+  /* 1.75 */
+  font-size: var(--reader-font-size);
+}
+
+/* 正文段落 - 中文两端对齐 */
+.reader-content p {
+  margin-bottom: var(--reader-paragraph-spacing);
+  /* 1.2em 段间距 */
+  text-align: justify;
+  text-justify: inter-ideograph;
+  /* 中文标点优化 */
+  /* 首行缩进 2em (两个汉字) */
+  text-indent: 2em;
+  /* 断词防止河流效应 */
+  word-break: break-word;
+  hyphens: auto;
+  /* 悬挂标点 - 让引号等悬挂在边缘外 */
+  hanging-punctuation: first allow-end last;
+}
+
+/* 章节标题 - 不需要巨大，通过字重区分 */
+.reader-content h2 {
+  font-size: 1.35em;
+  /* 相对适中 */
+  font-weight: 600;
+  margin-top: 3em;
+  margin-bottom: 1.5em;
+  color: var(--text-primary);
+  letter-spacing: 0.02em;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.5em;
+}
+
+/* 溯源引用 - 章节级高亮 */
+.citation-chapter-highlight {
+  background: linear-gradient(90deg, rgba(251, 191, 36, 0.15) 0%, transparent 100%);
+  border-left: 4px solid #f59e0b !important;
+  padding-left: 1em !important;
+  animation: citation-pulse 1s ease-in-out 3;
+}
+
+@keyframes citation-pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* 溯源引用 - 文字级高亮 */
+.citation-highlight {
+  background: linear-gradient(180deg, transparent 60%, #fcd34d 60%) !important;
+  padding: 2px 4px;
+  border-radius: 3px;
+  animation: citation-pulse 1s ease-in-out infinite;
+}
